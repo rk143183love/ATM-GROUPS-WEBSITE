@@ -1,17 +1,24 @@
-async function loadContent(){try{const r=await fetch('content.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error();return await r.json()}catch(e){return window.ATM_CONTENT||{}}}
-function text(el,v){if(el&&v!=null)el.textContent=v}
-(async()=>{const C=await loadContent();const c=C.company||{};
-text(document.querySelector('.topbar-in span:first-child'),c.legalName||'Logistics & Manpower Solutions');text(document.querySelector('.topbar-in span:last-child'),c.established?'Established '+c.established:'');
-text(document.querySelector('.brand b'),c.name||'ATM GROUPS');text(document.querySelector('.brand small'),c.legalName||'LOGISTICS & MANPOWER SOLUTIONS');text(document.querySelector('.hero h1'),c.tagline||'People, logistics & operations — handled.');
-const stats=document.querySelectorAll('.stats strong');if(stats[0])stats[0].textContent=c.workforce||'150–200+';if(stats[1])stats[1].textContent=(c.established||'August 2022').replace('August ','');if(stats[2])stats[2].textContent=(C.services||[]).length+'+';
-const about=document.querySelector('#about');if(about){const ps=about.querySelectorAll('p');text(ps[0],C.about||'');}
-const divs=document.querySelectorAll('#divisions article');(C.divisions||[]).forEach((d,i)=>{if(!divs[i])return;text(divs[i].querySelector('h3'),d.name);text(divs[i].querySelector('p'),d.description)});
-const serviceGrid=document.getElementById('serviceGrid');if(serviceGrid){serviceGrid.innerHTML='';(C.services||[]).forEach((s,i)=>{const el=document.createElement('div');el.className='service';el.innerHTML=`<i>${String(i+1).padStart(2,'0')}</i><span></span>`;el.querySelector('span').textContent=s;serviceGrid.appendChild(el)})}
-const vision=document.querySelector('#vision');if(vision){text(vision.querySelector('.quote-card h2'),C.vision||'Trusted. Disciplined. Leading.');text(vision.querySelector('.quote-card p'),C.vision||'');text(vision.querySelector('.mission-card p'),C.mission||'')}
-const why=document.querySelectorAll('.why-grid>div');(C.whyUs||[]).forEach((s,i)=>{if(!why[i])return;text(why[i].querySelector('h3'),s);text(why[i].querySelector('p'),'')});
-const clientsGrid=document.getElementById('clientsGrid');if(clientsGrid){clientsGrid.innerHTML='';(C.clients||[]).forEach((s,i)=>{const el=document.createElement('div');el.className='client';el.innerHTML=`${String(i+1).padStart(2,'0')} &nbsp; `;const span=document.createElement('span');span.textContent=s;el.appendChild(span);clientsGrid.appendChild(el)})}
-const cl=document.querySelector('.compliance-list');if(cl){cl.innerHTML='';(C.compliance||[]).forEach(s=>{const x=document.createElement('span');x.textContent=s;cl.appendChild(x)})}
-const contact=document.querySelector('#contact');if(contact){const links=contact.querySelectorAll('.contact-details>a');if(links[0]){links[0].href='tel:'+(c.phones?.[0]||'');text(links[0].querySelector('b'),c.phones?.[0]||'')}if(links[1]){links[1].href='tel:'+(c.phones?.[1]||'');text(links[1].querySelector('b'),c.phones?.[1]||'')}if(links[2]){links[2].href='mailto:'+(c.email||'');text(links[2].querySelector('b'),c.email||'')}const ad=contact.querySelector('.contact-details>div b');if(ad)ad.innerHTML=(c.address||'').replace(/, /g,', <br>')}
-const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
-const menu=document.querySelector('.menu'),nav=document.querySelector('#nav');if(menu)menu.addEventListener('click',()=>{nav.style.display=nav.style.display==='flex'?'none':'flex';nav.style.flexDirection='column';nav.style.position='absolute';nav.style.top='68px';nav.style.right='4%';nav.style.background='#fff';nav.style.padding='18px';nav.style.border='1px solid #e5e9ef';nav.style.borderRadius='10px';nav.style.boxShadow='0 15px 40px #0002'});
-})();
+let C=window.ATM_CONTENT||{};
+const $=s=>document.querySelector(s);
+function safe(v=''){return String(v).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]||m));}
+function renderList(id,items,kind){const el=document.getElementById(id);if(!el)return;el.innerHTML=(items||[]).map((x,i)=>{if(kind==='services')return `<div class="service"><i>${String(i+1).padStart(2,'0')}</i><span>${safe(x)}</span></div>`;return `<div class="client">${String(i+1).padStart(2,'0')} &nbsp; ${safe(x)}</div>`}).join('')}
+function render(){
+ const c=C.company||{}, a=C.about||'';
+ const hero=$('#home h1'); if(hero&&c.tagline)hero.innerHTML=safe(c.tagline).replace('handled.','<em>handled.</em>');
+ const hp=$('#home .hero-copy>p'); if(hp&&c.description)hp.textContent=c.description;
+ const about=$('#about .lead'); if(about)about.textContent=a;
+ const established=document.querySelector('#home .stats div:nth-child(2) strong'); if(established)established.textContent=(c.established||'August 2022').replace('August ','');
+ const workforce=document.querySelector('#home .stats div:first-child strong'); if(workforce)workforce.textContent=c.workforce||'150–200+';
+ renderList('serviceGrid',C.services,'services'); renderList('clientsGrid',C.clients,'clients');
+ const v=$('#vision .quote-card p'); if(v&&C.vision)v.textContent=C.vision;
+ const m=$('#vision .mission-card p'); if(m&&C.mission)m.textContent=C.mission;
+ const phoneLinks=document.querySelectorAll('.contact-details a[href^="tel:"]'); (c.phones||[]).forEach((p,i)=>{if(phoneLinks[i]){phoneLinks[i].href='tel:'+p;phoneLinks[i].querySelector('b').textContent=p}});
+ const email=document.querySelector('.contact-details a[href^="mailto:"]');if(email&&c.email){email.href='mailto:'+c.email;email.querySelector('b').textContent=c.email}
+ const addr=document.querySelector('.contact-details div b');if(addr&&c.address)addr.innerHTML=safe(c.address).replace(/, /g,',<br>');
+ const logo=C.images&&C.images.logo; if(logo)document.querySelectorAll('img[src*="atm-logo"]').forEach(img=>img.src=logo);
+ document.querySelector('#year').textContent=new Date().getFullYear();
+}
+async function load(){try{const r=await fetch('content.json?'+Date.now());if(r.ok)C=await r.json()}catch(e){}render()}
+function setupTabs(){const sections=[...document.querySelectorAll('main>section[id]')];const nav=document.querySelector('#nav');if(!nav)return;nav.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);sections.forEach(s=>s.style.display=s.id===id?'block':'none');nav.querySelectorAll('a').forEach(x=>x.classList.remove('active'));a.classList.add('active');history.replaceState(null,'','#'+id);window.scrollTo({top:0,behavior:'smooth'});nav.style.display=''}));const initial=location.hash.slice(1)||'home';const target=sections.find(s=>s.id===initial)||sections[0];sections.forEach(s=>s.style.display=s===target?'block':'none');const active=nav.querySelector(`a[href="#${target.id}"]`);if(active)active.classList.add('active')}
+const menu=document.querySelector('.menu'),nav=document.querySelector('#nav');if(menu&&nav)menu.addEventListener('click',()=>nav.classList.toggle('open'));
+load().then(setupTabs);
