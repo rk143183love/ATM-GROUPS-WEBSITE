@@ -18,9 +18,10 @@ function render(){
  const m=$('#vision .mission-card p'); if(m) m.textContent=C.mission||'';
  const phones=c.phones||[]; const links=document.querySelectorAll('.contact-details a[href^="tel:"]'); phones.forEach((p,i)=>{if(links[i]){links[i].href='tel:'+p;const b=links[i].querySelector('b');if(b)b.textContent=p;}});
  const email=document.querySelector('.contact-details a[href^="mailto:"]'); if(email&&c.email){email.href='mailto:'+c.email;const b=email.querySelector('b');if(b)b.textContent=c.email;}
- const enquiry=document.querySelector('.contact-card a[href^="mailto:"]'); if(enquiry&&c.email) enquiry.href='mailto:'+c.email;
+ const enquiryEmail=c.email||'atmgroup2830@gmail.com';
+ const enquiry=document.querySelector('.contact-card a[href^="mailto:"]'); if(enquiry) enquiry.href='mailto:'+enquiryEmail;
  const addr=document.querySelector('.contact-details div b'); if(addr&&c.address) addr.textContent=c.address;
- const logo=C.images?.logo||'assets/atm-logo.svg'; document.querySelectorAll('img[src*="atm-logo"],img[alt*="ATM GROUPS"]').forEach(img=>{img.src=logo;});
+ const logo='assets/atm-logo.svg'; document.querySelectorAll('img[src*="atm-logo"],img[alt*="ATM GROUPS"]').forEach(img=>{img.src=logo;});
  const year=$('#year'); if(year) year.textContent=new Date().getFullYear();
 }
 
@@ -54,9 +55,33 @@ function setupTheme(){
  button?.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark-theme')));
 }
 
+function setupInquiry(){
+ const form=$('#inquiryForm'); if(!form) return;
+ form.addEventListener('submit',e=>{
+   e.preventDefault();
+   const data=new FormData(form);
+   const email=(C.company&&C.company.email)||'atmgroup2830@gmail.com';
+   const subject=`Website Inquiry - ${data.get('service')||'General Requirement'}`;
+   const body=[
+     'NEW ATM GROUPS WEBSITE INQUIRY','',
+     `Name: ${data.get('name')||''}`,
+     `Company / Business: ${data.get('company')||''}`,
+     `Phone: ${data.get('phone')||''}`,
+     `Inquiry For: ${data.get('service')||''}`,
+     '',
+     'Requirement Details:',
+     `${data.get('message')||''}`
+   ].join('\n');
+   const href=`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+   const status=$('#formStatus');
+   if(status) status.textContent='Opening your email app with the enquiry details…';
+   window.location.href=href;
+ });
+}
+
 async function load(){
  try{const r=await fetch('/content.json?version='+Date.now(),{cache:'no-store'});if(r.ok){const fresh=await r.json();if(fresh&&typeof fresh==='object')C=fresh;}}catch(e){console.warn('Using fallback content',e);}
- render(); setupTabs(); setupTheme();
+ render(); setupTabs(); setupTheme(); setupInquiry();
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
