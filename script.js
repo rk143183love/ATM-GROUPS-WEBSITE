@@ -1,6 +1,17 @@
 let C=window.ATM_CONTENT||{};
 const $=s=>document.querySelector(s);
 const safe=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]||m));
+function applyBranding(){
+ const c=C.company||{}; const name=String(c.name||'ATM GROUPS').trim()||'ATM GROUPS';
+ const logo=(C.images&&C.images.logo)||'assets/atm-logo.svg';
+ document.querySelectorAll('.brand img,.orbit-core img').forEach(img=>{img.src=logo;img.alt=name+' logo';});
+ const fav=document.querySelector('link[rel="icon"]');if(fav)fav.href=logo;
+ document.querySelectorAll('.brand b,.hero-panel .panel-label').forEach(el=>el.textContent=name);
+ document.querySelectorAll('.brand small').forEach(el=>el.textContent=c.legalName||'LOGISTICS & MANPOWER SOLUTIONS');
+ document.querySelectorAll('body *').forEach(el=>{if(el.children.length===0&&el.textContent&&el.textContent.includes('ATM GROUPS'))el.textContent=el.textContent.replaceAll('ATM GROUPS',name);});
+ document.title=name+' | Logistics & Manpower Solutions';
+ const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=name+' provides contract manpower, logistics, cargo transport, facility management, staffing and industrial support services.';
+}
 function render(){
  const c=C.company||{}; const hero=$('#home h1');
  if(hero) hero.innerHTML=safe(c.tagline||'People, logistics & operations — handled.').replace('handled.','<em>handled.</em>');
@@ -16,7 +27,7 @@ function render(){
  const phones=c.phones||[]; const links=document.querySelectorAll('.contact-details a[href^="tel:"]'); phones.forEach((p,i)=>{if(links[i]){links[i].href='tel:'+p;const b=links[i].querySelector('b');if(b)b.textContent=p;}});
  const email=document.querySelector('.contact-details a[href^="mailto:"]'); if(email&&c.email){email.href='mailto:'+c.email;const b=email.querySelector('b');if(b)b.textContent=c.email;}
  const addr=document.querySelector('.contact-details div b'); if(addr&&c.address) addr.textContent=c.address;
- document.querySelectorAll('img[src*="atm-logo"],img[alt*="ATM GROUPS"]').forEach(img=>{img.src='assets/atm-logo.svg';});
+ applyBranding();
  const year=$('#year'); if(year) year.textContent=new Date().getFullYear();
 }
 function showTab(id,updateHash=true){const target=document.getElementById(id)||document.getElementById('home');if(!target)return;document.querySelectorAll('#nav a[href^="#"]').forEach(a=>a.classList.toggle('active',a.hash.slice(1)===target.id));if(updateHash)history.replaceState(null,'','#'+target.id);target.scrollIntoView({behavior:'smooth',block:'start'});}
