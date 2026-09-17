@@ -57,24 +57,19 @@ function setupTheme(){
 
 function setupInquiry(){
  const form=$('#inquiryForm'); if(!form) return;
+ if(!document.getElementById('inquiryStyles')){
+  const s=document.createElement('style'); s.id='inquiryStyles'; s.textContent=`
+  .contact-card{position:relative;overflow:hidden}.contact-card:before{content:'';position:absolute;width:220px;height:220px;border:1px solid rgba(22,167,232,.18);border-radius:50%;right:-110px;top:-110px;animation:atmSpin 18s linear infinite}.inquiry-card form{position:relative;z-index:1}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.inquiry-card label{display:block;color:#dbe8f4;font-size:10px;font-weight:700;letter-spacing:.4px;margin-bottom:13px}.inquiry-card input,.inquiry-card select,.inquiry-card textarea{display:block;width:100%;margin-top:6px;border:1px solid #35536d;background:rgba(255,255,255,.06);color:#fff;border-radius:8px;padding:11px 12px;font:500 12px 'DM Sans';outline:none;transition:.2s}.inquiry-card select option{color:#101b2b}.inquiry-card input::placeholder,.inquiry-card textarea::placeholder{color:#8499ad}.inquiry-card input:focus,.inquiry-card select:focus,.inquiry-card textarea:focus{border-color:#16a7e8;box-shadow:0 0 0 3px rgba(22,167,232,.12)}.inquiry-card textarea{resize:vertical;min-height:100px}.form-submit{border:0;cursor:pointer;margin-top:3px}.form-note{display:block;color:#8fa5b8;font-size:9px;margin-top:10px}.form-status{color:#ffd36b;font-size:10px;margin-top:8px;min-height:16px}@keyframes atmSpin{to{transform:rotate(360deg)}}@media(max-width:600px){.form-row{grid-template-columns:1fr}.inquiry-card{padding:28px}}`;
+  document.head.appendChild(s);
+ }
  form.addEventListener('submit',e=>{
    e.preventDefault();
    const data=new FormData(form);
    const email=(C.company&&C.company.email)||'atmgroup2830@gmail.com';
    const subject=`Website Inquiry - ${data.get('service')||'General Requirement'}`;
-   const body=[
-     'NEW ATM GROUPS WEBSITE INQUIRY','',
-     `Name: ${data.get('name')||''}`,
-     `Company / Business: ${data.get('company')||''}`,
-     `Phone: ${data.get('phone')||''}`,
-     `Inquiry For: ${data.get('service')||''}`,
-     '',
-     'Requirement Details:',
-     `${data.get('message')||''}`
-   ].join('\n');
+   const body=['NEW ATM GROUPS WEBSITE INQUIRY','',`Name: ${data.get('name')||''}`,`Company / Business: ${data.get('company')||''}`,`Phone: ${data.get('phone')||''}`,`Inquiry For: ${data.get('service')||''}`,'','Requirement Details:',`${data.get('message')||''}`].join('\n');
    const href=`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-   const status=$('#formStatus');
-   if(status) status.textContent='Opening your email app with the enquiry details…';
+   const status=$('#formStatus'); if(status) status.textContent='Opening your email app with the enquiry details…';
    window.location.href=href;
  });
 }
