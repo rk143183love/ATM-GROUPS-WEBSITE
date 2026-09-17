@@ -1,0 +1,58 @@
+{
+  "company": {
+    "name": "ATM GROUPS",
+    "legalName": "ATMGROUP'S LOGISTICS & MANPOWER SOLUTIONS",
+    "tagline": "People, logistics & operations — handled.",
+    "established": "August 2022",
+    "workforce": "150–200+",
+    "email": "atmgroup2830@gmail.com",
+    "phones": ["7058199737", "9763057617"],
+    "address": "A/P. Karegaon, Tal. Shirur, Dist. Pune, Maharashtra – 412220"
+  },
+  "about": "ATM GROUPS is a professionally managed organization providing contractual manpower, cargo transport and operational support for industrial and corporate environments. The organization supports clients with skilled, semi-skilled and unskilled manpower, contract labour deployment and logistics-oriented services.",
+  "services": [
+    "Labour Contracting Services",
+    "Loading & Unloading / Material Handling",
+    "Housekeeping Services",
+    "Job Work & Electrical Maintenance",
+    "Skilled / Unskilled / Technical Manpower",
+    "Gardening Services",
+    "Security Services",
+    "Placement & Staffing Services",
+    "Catering Services",
+    "Guest House Management",
+    "Supply Chain Management",
+    "Pest Control Services",
+    "Transport Service",
+    "Scrap Material Supply",
+    "Computer Accessories"
+  ],
+  "divisions": [
+    {"name":"Manpower Solutions","description":"Skilled, semi-skilled, unskilled and technical workforce deployment."},
+    {"name":"Logistics & Cargo","description":"Cargo transport, material movement and logistics-oriented operational support."},
+    {"name":"Facility Management","description":"Housekeeping, gardening, security, pest control and guest-house support."},
+    {"name":"Staffing & Placement","description":"Recruitment, placement and staffing support aligned with client requirements."},
+    {"name":"Industrial Support","description":"Labour contracting, material handling, job work and electrical maintenance."},
+    {"name":"Supply & Services","description":"Catering, scrap material and computer accessory supply services."}
+  ],
+  "vision": "To be a trusted, disciplined and leading organization in contract manpower and cargo transport, supporting industries, factories and businesses with dependable workforce and safe, timely transportation while building long-term collaboration.",
+  "mission": "To provide reliable contract manpower and efficient cargo transport so industries can operate smoothly, safely and on schedule, with manpower aligned to client requirements and transport delivered safely, timely and cost-effectively.",
+  "whyUs": [
+    "Scalable manpower for short-term and long-term requirements",
+    "Quick deployment and replacement support",
+    "PF, ESI and statutory compliance focused operations",
+    "Dedicated site supervision and coordination",
+    "Trained and disciplined workforce with safety and productivity focus",
+    "Transparent and ethical working practices"
+  ],
+  "clients": [
+    "PINNACLE POLYMERS PVT LTD.",
+    "DHANANJAY LLP",
+    "GLOBAL INDIA PVT. LTD.",
+    "AIRPOINT PVT. LTD.",
+    "TAC LOGISTICS",
+    "SAFEXPRESS"
+  ],
+  "compliance": ["GST", "EPFO", "ESIC", "MSME", "Registrations & Licenses"],
+  "images": {"logo":"assets/atm-logo.svg"}
+}
