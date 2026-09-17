@@ -1,10 +1,8 @@
 let C=window.ATM_CONTENT||{};
 const $=s=>document.querySelector(s);
 const safe=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]||m));
-
 function render(){
- const c=C.company||{};
- const hero=$('#home h1');
+ const c=C.company||{}; const hero=$('#home h1');
  if(hero) hero.innerHTML=safe(c.tagline||'People, logistics & operations — handled.').replace('handled.','<em>handled.</em>');
  const hp=$('#home .hero-copy>p'); if(hp) hp.textContent=c.heroText||'Reliable contract manpower and cargo transport solutions built for industrial and corporate environments.';
  const ws=document.querySelector('#home .stats div:first-child strong'); if(ws) ws.textContent=c.workforce||'150–200+';
@@ -14,72 +12,16 @@ function render(){
  const sg=$('#serviceGrid'); if(sg) sg.innerHTML=(C.services||[]).map((s,i)=>`<div class="service"><i>${String(i+1).padStart(2,'0')}</i><span>${safe(s)}</span></div>`).join('');
  const cg=$('#clientsGrid'); if(cg) cg.innerHTML=(C.clients||[]).map((s,i)=>`<div class="client"><b>${String(i+1).padStart(2,'0')}</b>&nbsp; ${safe(s)}</div>`).join('');
  const why=document.querySelector('.why-grid'); if(why&&Array.isArray(C.whyUs)) why.innerHTML=C.whyUs.map((x,i)=>`<div><b>${String(i+1).padStart(2,'0')}</b><h3>${safe(x)}</h3><p>Operational capability supporting dependable project execution.</p></div>`).join('');
- const v=$('#vision .quote-card p'); if(v) v.textContent=C.vision||'';
- const m=$('#vision .mission-card p'); if(m) m.textContent=C.mission||'';
+ const v=$('#vision .quote-card p'); if(v) v.textContent=C.vision||''; const m=$('#vision .mission-card p'); if(m) m.textContent=C.mission||'';
  const phones=c.phones||[]; const links=document.querySelectorAll('.contact-details a[href^="tel:"]'); phones.forEach((p,i)=>{if(links[i]){links[i].href='tel:'+p;const b=links[i].querySelector('b');if(b)b.textContent=p;}});
  const email=document.querySelector('.contact-details a[href^="mailto:"]'); if(email&&c.email){email.href='mailto:'+c.email;const b=email.querySelector('b');if(b)b.textContent=c.email;}
- const enquiryEmail=c.email||'atmgroup2830@gmail.com';
- const enquiry=document.querySelector('.contact-card a[href^="mailto:"]'); if(enquiry) enquiry.href='mailto:'+enquiryEmail;
  const addr=document.querySelector('.contact-details div b'); if(addr&&c.address) addr.textContent=c.address;
- const logo='assets/atm-logo.svg'; document.querySelectorAll('img[src*="atm-logo"],img[alt*="ATM GROUPS"]').forEach(img=>{img.src=logo;});
+ document.querySelectorAll('img[src*="atm-logo"],img[alt*="ATM GROUPS"]').forEach(img=>{img.src='assets/atm-logo.svg';});
  const year=$('#year'); if(year) year.textContent=new Date().getFullYear();
 }
-
-function showTab(id,updateHash=true){
- const target=document.getElementById(id)||document.getElementById('home');
- if(!target) return;
- document.querySelectorAll('#nav a[href^="#"]').forEach(a=>a.classList.toggle('active',a.hash.slice(1)===target.id));
- if(updateHash) history.replaceState(null,'','#'+target.id);
- target.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function setupTabs(){
- document.querySelectorAll('#nav a[href^="#"],a.btn[href^="#"],.brand[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
-   const id=a.getAttribute('href').slice(1); if(!document.getElementById(id)) return;
-   e.preventDefault(); showTab(id,true);
-   const nav=$('#nav'); if(nav) nav.classList.remove('open');
- }));
- const initial=location.hash.slice(1)||'home';
- const target=document.getElementById(initial)||document.getElementById('home');
- if(target) target.scrollIntoView({behavior:'auto',block:'start'});
- document.querySelectorAll('#nav a[href^="#"]').forEach(a=>a.classList.toggle('active',a.hash.slice(1)===(target?.id||'home')));
- window.addEventListener('hashchange',()=>showTab(location.hash.slice(1)||'home',false));
-}
-
-function setupTheme(){
- const button=$('#themeToggle'), icon=$('#themeIcon'), text=$('#themeText');
- const saved=localStorage.getItem('atm-theme');
- const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
- const setTheme=dark=>{document.body.classList.toggle('dark-theme',dark);localStorage.setItem('atm-theme',dark?'dark':'light');if(icon)icon.textContent=dark?'☀':'☾';if(text)text.textContent=dark?'Day':'Night';button?.setAttribute('aria-label',dark?'Switch to day theme':'Switch to night theme');};
- setTheme(saved?saved==='dark':prefersDark);
- button?.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark-theme')));
-}
-
-function setupInquiry(){
- const form=$('#inquiryForm'); if(!form) return;
- if(!document.getElementById('inquiryStyles')){
-  const s=document.createElement('style'); s.id='inquiryStyles'; s.textContent=`
-  .contact-card{position:relative;overflow:hidden}.contact-card:before{content:'';position:absolute;width:220px;height:220px;border:1px solid rgba(22,167,232,.18);border-radius:50%;right:-110px;top:-110px;animation:atmSpin 18s linear infinite}.inquiry-card form{position:relative;z-index:1}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.inquiry-card label{display:block;color:#dbe8f4;font-size:10px;font-weight:700;letter-spacing:.4px;margin-bottom:13px}.inquiry-card input,.inquiry-card select,.inquiry-card textarea{display:block;width:100%;margin-top:6px;border:1px solid #35536d;background:rgba(255,255,255,.06);color:#fff;border-radius:8px;padding:11px 12px;font:500 12px 'DM Sans';outline:none;transition:.2s}.inquiry-card select option{color:#101b2b}.inquiry-card input::placeholder,.inquiry-card textarea::placeholder{color:#8499ad}.inquiry-card input:focus,.inquiry-card select:focus,.inquiry-card textarea:focus{border-color:#16a7e8;box-shadow:0 0 0 3px rgba(22,167,232,.12)}.inquiry-card textarea{resize:vertical;min-height:100px}.form-submit{border:0;cursor:pointer;margin-top:3px}.form-note{display:block;color:#8fa5b8;font-size:9px;margin-top:10px}.form-status{color:#ffd36b;font-size:10px;margin-top:8px;min-height:16px}@keyframes atmSpin{to{transform:rotate(360deg)}}@media(max-width:600px){.form-row{grid-template-columns:1fr}.inquiry-card{padding:28px}}`;
-  document.head.appendChild(s);
- }
- form.addEventListener('submit',e=>{
-   e.preventDefault();
-   const data=new FormData(form);
-   const email=(C.company&&C.company.email)||'atmgroup2830@gmail.com';
-   const subject=`Website Inquiry - ${data.get('service')||'General Requirement'}`;
-   const body=['NEW ATM GROUPS WEBSITE INQUIRY','',`Name: ${data.get('name')||''}`,`Company / Business: ${data.get('company')||''}`,`Phone: ${data.get('phone')||''}`,`Inquiry For: ${data.get('service')||''}`,'','Requirement Details:',`${data.get('message')||''}`].join('\n');
-   const href=`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-   const status=$('#formStatus'); if(status) status.textContent='Opening your email app with the enquiry details…';
-   window.location.href=href;
- });
-}
-
-async function load(){
- try{const r=await fetch('/content.json?version='+Date.now(),{cache:'no-store'});if(r.ok){const fresh=await r.json();if(fresh&&typeof fresh==='object')C=fresh;}}catch(e){console.warn('Using fallback content',e);}
- render(); setupTabs(); setupTheme(); setupInquiry();
-}
-
-document.addEventListener('DOMContentLoaded',()=>{
- const menu=$('.menu'),nav=$('#nav'); if(menu&&nav)menu.addEventListener('click',()=>nav.classList.toggle('open'));
- load();
-});
+function showTab(id,updateHash=true){const target=document.getElementById(id)||document.getElementById('home');if(!target)return;document.querySelectorAll('#nav a[href^="#"]').forEach(a=>a.classList.toggle('active',a.hash.slice(1)===target.id));if(updateHash)history.replaceState(null,'','#'+target.id);target.scrollIntoView({behavior:'smooth',block:'start'});}
+function setupTabs(){document.querySelectorAll('#nav a[href^="#"],a.btn[href^="#"],.brand[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);if(!document.getElementById(id))return;e.preventDefault();showTab(id,true);$('#nav')?.classList.remove('open');}));const initial=location.hash.slice(1)||'home';const target=document.getElementById(initial)||document.getElementById('home');if(target)target.scrollIntoView({behavior:'auto',block:'start'});document.querySelectorAll('#nav a[href^="#"]').forEach(a=>a.classList.toggle('active',a.hash.slice(1)===(target?.id||'home')));window.addEventListener('hashchange',()=>showTab(location.hash.slice(1)||'home',false));}
+function setupTheme(){const button=$('#themeToggle'),icon=$('#themeIcon'),text=$('#themeText');const saved=localStorage.getItem('atm-theme');const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;const setTheme=dark=>{document.body.classList.toggle('dark-theme',dark);localStorage.setItem('atm-theme',dark?'dark':'light');if(icon)icon.textContent=dark?'☀':'☾';if(text)text.textContent=dark?'Day':'Night';button?.setAttribute('aria-label',dark?'Switch to day theme':'Switch to night theme');};setTheme(saved?saved==='dark':prefersDark);button?.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark-theme')));}
+function setupInquiry(){const form=$('#inquiryForm');if(!form)return;form.addEventListener('submit',async e=>{e.preventDefault();const btn=form.querySelector('button[type="submit"]'),status=$('#formStatus'),data=Object.fromEntries(new FormData(form).entries());if(btn)btn.disabled=true;if(status)status.textContent='Sending your enquiry…';try{const r=await fetch('/api/inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||'Could not send enquiry.');form.reset();if(status)status.textContent='✓ Enquiry sent successfully. ATM GROUPS has been notified.';}catch(err){if(status)status.textContent='Unable to send right now. Please call ATM GROUPS directly.';console.error(err);}finally{if(btn)btn.disabled=false;}});}
+async function load(){try{const r=await fetch('/content.json?version='+Date.now(),{cache:'no-store'});if(r.ok){const fresh=await r.json();if(fresh&&typeof fresh==='object')C=fresh;}}catch(e){console.warn('Using fallback content',e);}render();setupTabs();setupTheme();setupInquiry();}
+document.addEventListener('DOMContentLoaded',()=>{const menu=$('.menu'),nav=$('#nav');if(menu&&nav)menu.addEventListener('click',()=>nav.classList.toggle('open'));load();});
