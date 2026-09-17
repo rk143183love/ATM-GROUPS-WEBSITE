@@ -18,18 +18,18 @@ function render(){
  const m=$('#vision .mission-card p'); if(m) m.textContent=C.mission||'';
  const phones=c.phones||[]; const links=document.querySelectorAll('.contact-details a[href^="tel:"]'); phones.forEach((p,i)=>{if(links[i]){links[i].href='tel:'+p;const b=links[i].querySelector('b');if(b)b.textContent=p;}});
  const email=document.querySelector('.contact-details a[href^="mailto:"]'); if(email&&c.email){email.href='mailto:'+c.email;const b=email.querySelector('b');if(b)b.textContent=c.email;}
+ const enquiry=document.querySelector('.contact-card a[href^="mailto:"]'); if(enquiry&&c.email) enquiry.href='mailto:'+c.email;
  const addr=document.querySelector('.contact-details div b'); if(addr&&c.address) addr.textContent=c.address;
  const logo=C.images?.logo||'assets/atm-logo.svg'; document.querySelectorAll('img[src*="atm-logo"],img[alt*="ATM GROUPS"]').forEach(img=>{img.src=logo;});
  const year=$('#year'); if(year) year.textContent=new Date().getFullYear();
 }
 
 function showTab(id,updateHash=true){
- const sections=[...document.querySelectorAll('main>section[id]')];
- const target=sections.find(s=>s.id===id)||sections.find(s=>s.id==='home')||sections[0];
- sections.forEach(s=>s.hidden=s!==target);
+ const target=document.getElementById(id)||document.getElementById('home');
+ if(!target) return;
  document.querySelectorAll('#nav a[href^="#"]').forEach(a=>a.classList.toggle('active',a.hash.slice(1)===target.id));
  if(updateHash) history.replaceState(null,'','#'+target.id);
- window.scrollTo({top:0,behavior:'smooth'});
+ target.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function setupTabs(){
@@ -38,7 +38,10 @@ function setupTabs(){
    e.preventDefault(); showTab(id,true);
    const nav=$('#nav'); if(nav) nav.classList.remove('open');
  }));
- const initial=location.hash.slice(1)||'home'; showTab(initial,false);
+ const initial=location.hash.slice(1)||'home';
+ const target=document.getElementById(initial)||document.getElementById('home');
+ if(target) target.scrollIntoView({behavior:'auto',block:'start'});
+ document.querySelectorAll('#nav a[href^="#"]').forEach(a=>a.classList.toggle('active',a.hash.slice(1)===(target?.id||'home')));
  window.addEventListener('hashchange',()=>showTab(location.hash.slice(1)||'home',false));
 }
 
