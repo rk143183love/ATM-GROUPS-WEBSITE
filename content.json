@@ -6,7 +6,10 @@
     "established": "August 2022",
     "workforce": "150–200+",
     "email": "atmgroup2830@gmail.com",
-    "phones": ["7058199737", "9763057617"],
+    "phones": [
+      "7058199737",
+      "9763057617"
+    ],
     "address": "A/P. Karegaon, Tal. Shirur, Dist. Pune, Maharashtra – 412220"
   },
   "about": "ATM GROUPS is a professionally managed organization providing contractual manpower, cargo transport and operational support for industrial and corporate environments. The organization supports clients with skilled, semi-skilled and unskilled manpower, contract labour deployment and logistics-oriented services.",
@@ -28,12 +31,30 @@
     "Computer Accessories"
   ],
   "divisions": [
-    {"name":"Manpower Solutions","description":"Skilled, semi-skilled, unskilled and technical workforce deployment."},
-    {"name":"Logistics & Cargo","description":"Cargo transport, material movement and logistics-oriented operational support."},
-    {"name":"Facility Management","description":"Housekeeping, gardening, security, pest control and guest-house support."},
-    {"name":"Staffing & Placement","description":"Recruitment, placement and staffing support aligned with client requirements."},
-    {"name":"Industrial Support","description":"Labour contracting, material handling, job work and electrical maintenance."},
-    {"name":"Supply & Services","description":"Catering, scrap material and computer accessory supply services."}
+    {
+      "name": "Manpower Solutions",
+      "description": "Skilled, semi-skilled, unskilled and technical workforce deployment."
+    },
+    {
+      "name": "Logistics & Cargo",
+      "description": "Cargo transport, material movement and logistics-oriented operational support."
+    },
+    {
+      "name": "Facility Management",
+      "description": "Housekeeping, gardening, security, pest control and guest-house support."
+    },
+    {
+      "name": "Staffing & Placement",
+      "description": "Recruitment, placement and staffing support aligned with client requirements."
+    },
+    {
+      "name": "Industrial Support",
+      "description": "Labour contracting, material handling, job work and electrical maintenance."
+    },
+    {
+      "name": "Supply & Services",
+      "description": "Catering, scrap material and computer accessory supply services."
+    }
   ],
   "vision": "To be a trusted, disciplined and leading organization in contract manpower and cargo transport, supporting industries, factories and businesses with dependable workforce and safe, timely transportation while building long-term collaboration.",
   "mission": "To provide reliable contract manpower and efficient cargo transport so industries can operate smoothly, safely and on schedule, with manpower aligned to client requirements and transport delivered safely, timely and cost-effectively.",
@@ -53,6 +74,14 @@
     "TAC LOGISTICS",
     "SAFEXPRESS"
   ],
-  "compliance": ["GST", "EPFO", "ESIC", "MSME", "Registrations & Licenses"],
-  "images": {"logo":"assets/atm-logo.svg"}
+  "compliance": [
+    "GST",
+    "EPFO",
+    "ESIC",
+    "MSME",
+    "Registrations & Licenses"
+  ],
+  "images": {
+    "logo": "https://img.sanishtech.com/u/bbd2d07f65d2020c8dc893776da14dcd.png"
+  }
 }
